@@ -99,7 +99,11 @@ class Campaigns(models.Model):
         verbose_name="Choose a campaign Objetve",
         null=False
     )
-    branch_id = models.ForeignKey(Branchs, on_delete=models.CASCADE, verbose_name="Branchs")
+    branch_id = models.ForeignKey(
+        Branchs, 
+        on_delete=models.CASCADE, 
+        verbose_name="Choose the Branch"
+    )
     positioning_id = models.ForeignKey(
         Positionings, 
         on_delete=models.PROTECT, 
