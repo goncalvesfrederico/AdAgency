@@ -18,6 +18,9 @@ class Branchs(models.Model):
     facebook = models.TextField(max_length=100, verbose_name="Facebook URL", null=False)
     website = models.TextField(max_length=100, verbose_name="Website URL", null=False)
 
+    def __str__(self):
+        return self.name
+
 
 class Audiences(models.Model):
     name = models.TextField(max_length=100, null=False, verbose_name="Audience Name")
@@ -38,6 +41,9 @@ class Audiences(models.Model):
         verbose_name="Activation Status",
         null=False
     )
+
+    def __str__(self):
+        return self.name
 
 
 class Positionings(models.Model):
@@ -71,6 +77,9 @@ class Positionings(models.Model):
         null=False
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Campaigns(models.Model):
     name = models.TextField(max_length=100, null=False, verbose_name="Campaign Name")
@@ -101,6 +110,9 @@ class Campaigns(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Choose the Audience"
     )
+
+    def __str__(self):
+        return self.name
     
 
 class Ads(models.Model):
@@ -124,3 +136,6 @@ class Ads(models.Model):
         verbose_name="Choose the Campaign", 
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return self.name
