@@ -25,7 +25,7 @@ class Branchs(models.Model):
 class Audiences(models.Model):
     name = models.TextField(max_length=100, null=False, verbose_name="Audience Name")
     locations = models.TextField(max_length=50, null=False, default="United States")
-    age = models.IntegerField(max_length=2, verbose_name="18", default=18)
+    age = models.IntegerField(verbose_name="18", default=18)
     language = models.TextField(max_length=15, verbose_name="English", default="English")
     interest = models.CharField(
         max_length=15,
