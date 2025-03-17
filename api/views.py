@@ -229,3 +229,75 @@ def campaign_detail(request, pk):
     elif request.method == "DELETE":
         campaign.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+# ADS
+@api_view(['GET'])
+def get_ads(request):
+    ads = Ads.objects.all()
+    serializer = AdsSerializer(ads, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def create_ad(request):
+    serializer = AdsSerializer(data=request.data)
+    if serializer.is_valid():
+        try:
+            campaign_id = request.data.get("campaign_id")
+            campaign = Campaigns.objects.get(pk=campaign_id)
+            
+            if campaign.activated == "active":
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(
+                    {"error": "Cannot create an Ad for an inactive campaign"},
+                    status=status.HTTP_406_NOT_ACCEPTABLE
+                )
+        
+        except Campaigns.DoesNotExist:
+            return Response({"error": "Campaign not found!"}, \
+                            status=status.HTTP_404_NOT_FOUND)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PATCH', 'DELETE'])
+def ad_detail(request, pk):
+    try:
+        ad = Ads.objects.get(pk=pk)
+    except Ads.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
+    if request.method == "GET":
+        serializer = AdsSerializer(ad)
+        return Response(serializer.data)
+    
+    elif request.method == "PATCH":
+        serializer = AdsSerializer(ad, data=request.data, partial=True)
+        if serializer.is_valid():
+            try:
+                campaign_id = request.data.get("campaign_id")
+                campaign = Campaigns.objects.get(pk=campaign_id) if campaign_id else ad.campaign_id
+                
+                message = "Ad updated successfully."
+
+                if campaign.activated == "active":
+                    ad.campaign_id = campaign
+                    serializer.save()
+                    
+                    content = {
+                        "message": message,
+                        "ad": serializer.data
+                    }
+                    return Response(content, status=status.HTTP_201_CREATED)
+                else:
+                    return Response(
+                        {"error": "Cannot update a Campaign for an inactive branch, or positioning or audience"},
+                        status=status.HTTP_406_NOT_ACCEPTABLE
+                    )
+            except Campaigns.DoesNotExist:
+                return Response({"error": "Campaign not found!"}, \
+                                status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+    elif request.method == "DELETE":
+        ad.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

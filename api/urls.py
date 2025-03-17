@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import get_branchs, create_branch, branch_detail, get_audiences, create_audience, \
     audience_detail, get_positionings, create_positioning, positioning_detail, get_campaigns, \
-    create_campaign, campaign_detail
+    create_campaign, campaign_detail, get_ads, create_ad, ad_detail
 
 urlpatterns = [
     # BRANCHS
@@ -20,4 +20,8 @@ urlpatterns = [
     path('campaigns/', get_campaigns, name="get_campaigns"),
     path('campaigns/create/', create_campaign, name="create_campaign"),
     path('campaigns/<int:pk>', campaign_detail, name="campaign_detail"),
+    # ADS
+    path('ads/', get_ads, name="get_ads"),
+    path('ads/create/', create_ad, name="create_ad"),
+    path('ads/<int:pk>', ad_detail, name="ad_detail"),
 ]
