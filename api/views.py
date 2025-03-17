@@ -290,7 +290,7 @@ def ad_detail(request, pk):
                     return Response(content, status=status.HTTP_201_CREATED)
                 else:
                     return Response(
-                        {"error": "Cannot update a Campaign for an inactive branch, or positioning or audience"},
+                        {"error": "Cannot update a Ad for an inactive campaign"},
                         status=status.HTTP_406_NOT_ACCEPTABLE
                     )
             except Campaigns.DoesNotExist:
