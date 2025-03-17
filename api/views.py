@@ -33,9 +33,15 @@ def branch_detail(request, pk):
     
     elif request.method == "PATCH":
         serializer = BranchsSerializer(branch, data=request.data, partial=True)
+        message = "Branch updated successfully."
+
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            context = {
+                "message": message,
+                "branch": serializer.data
+            }
+            return Response(context, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == "DELETE":
@@ -70,9 +76,15 @@ def audience_detail(request, pk):
     
     elif request.method == "PATCH":
         serializer = AudiencesSerializer(audience, data=request.data, partial=True)
+        message = "Audience updated successfully."
+
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            context = {
+                "message": message,
+                "audience": serializer.data
+            }
+            return Response(context, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == "DELETE":
@@ -107,9 +119,15 @@ def positioning_detail(request, pk):
     
     elif request.method == "PATCH":
         serializer = PositioningsSerializer(positioning, data=request.data, partial=True)
+        message = "Positioning updated successfully."
+        
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            context = {
+                "message": message,
+                "positioning": serializer.data
+            }
+            return Response(context, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == "DELETE":
@@ -170,6 +188,8 @@ def campaign_detail(request, pk):
     
     elif request.method == "PATCH":
         serializer = CampaignsSerializer(campaign, data=request.data, partial=True)
+        message = "Campaign updated successfully."
+
         if serializer.is_valid():
             try:
                 branch_id = request.data.get("branch_id")
@@ -183,8 +203,6 @@ def campaign_detail(request, pk):
                 audience = Audiences.objects.get(pk=audience_id) if audience_id \
                     else campaign.audience_id
                 daily_budget = daily_budget_data if daily_budget_data else campaign.daily_budget
-
-                message = "Campaign updated successfully."
 
                 # Check if campaign should be deactivated based on daily_budget
                 if daily_budget is not None and \
