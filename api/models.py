@@ -1,5 +1,5 @@
 from django.db import models
-from api.utils import ActivationStatus, Interesting, YesOrNo, Devices, ObjectiveOfTheCampaign, \
+from api.utils.enum_options import ActivationStatus, Interesting, YesOrNo, Devices, ObjectiveOfTheCampaign, \
     AdFormat
 
 class Branchs(models.Model):
